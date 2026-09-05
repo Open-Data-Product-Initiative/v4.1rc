@@ -10,7 +10,7 @@ Each entry under `dataAccess` (such as `default`, `API`, or `Agent`) represents 
 - Link to both **machine-readable specs** (`specsURL`) and **human-readable guides** (`documentationURL`)
 - Promote **reusability** by referencing these interfaces throughout the ODPS YAML using `$ref`
 
-Including an AI agent-specific access interface (`outputPorttype: AI`) supports MCP-based agent interactions, aligning your product with **AI-native data delivery patterns**.
+Including an AI agent-specific access interface (`outputPortType: AI`) supports MCP-based agent interactions, aligning your product with **AI-native data delivery patterns**.
 
 #### Referencing Examples
 
@@ -26,26 +26,26 @@ For example in your `access` section in Pricing, you can reuse any defined metho
 dataAccess:
   default:
     name:
-      - en: Access to zipped package
+      en: Access to zipped package
     description: 
-      - en: Latest Dataset and Resources
-    outputPorttype: file
+      en: Latest Dataset and Resources
+    outputPortType: file
     format: zip
     accessURL: url to file as zip
   dataonly:
     name:
-      - en: Access to latest dataset
+      en: Access to latest dataset
     description: 
-      - en: Latest Dataset
-    outputPorttype: file
+      en: Latest Dataset
+    outputPortType: file
     format: CSV
     accessURL: url to file as CSV
   API:
     name:
-      - en: Access to API
+      en: Access to API
     description: 
-      - en: API Access to the Latest Dataset
-    outputPorttype: API
+      en: API Access to the Latest Dataset
+    outputPortType: API
     authenticationMethod: OAuth
     specification: OAS
     format: JSON
@@ -57,14 +57,12 @@ dataAccess:
       https://data.cms.gov/provr-enrollment/docs
   agent: 
     name:
-      - en: AI Agent access to the data product
+      en: AI Agent access to the data product
     description: 
-      - en: Provides AI agents access to the data product via MCP server. 
-    outputPorttype: AI
-    description: 
-    - en: MCP interface for structured data access and agent interaction.
+      en: MCP interface for structured data access and agent interaction.
+    outputPortType: AI
     authenticationMethod: Token
-    specification: MCP 2025-03-26
+    specification: MCP
     format: MCP
     specsURL: https://urbanpulse.ai/llms.txt
     documentationURL: https://urbanpulse.ai/llms-full.txt
@@ -99,7 +97,7 @@ dataAccess:
 | **default** | object | - | This object defines the default access interface and must always be present if dataAccess object is used. The name `default` is fixed and used as the fallback or primary access method. <br/><br/> In the example, you will see additional user-defined access methods (`dataonly`, `API`, `Agent`) demonstrating how various access interfaces can be added beyond the required `default`. <br/><br/> **Example reference usage:** <br/> `access: $ref: '#/dataAccess/default'`|
 | **name** | object | ISO 639-1 language codes (e.g., `en`) | Multilingual name for the access interface. Can be shown in UIs. |
 | **description** | object | ISO 639-1 language codes (e.g., `en`) | Multilingual description for the access interface. Supports user understanding. |
-| **outputPorttype** | string | file, API, SQL, AI, gRPC, sFTP, etc. | Describes the technical method for delivering data (e.g., `file` for file downloads, `API` for web services). |
+| **outputPortType** | string | file, API, SQL, AI, gRPC, sFTP, etc. | Describes the technical method for delivering data (e.g., `file` for file downloads, `API` for web services). |
 | **format** | string | TOON, JSON, XML, CSV, Excel, zip, plain text, GraphQL, MCP | Specifies the data format made available through this access channel. |
 | **authenticationMethod** | string | OAuth, Token, API key, HTTP Basic, none | Security model required to access the data. |
 | **specification** | string | OAS, RAML, Slate, MCP | Defines the type of API or protocol specification used to describe access (e.g., OpenAPI, RAML, or a custom protocol like MCP). |

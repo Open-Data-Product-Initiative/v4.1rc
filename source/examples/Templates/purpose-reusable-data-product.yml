@@ -48,7 +48,7 @@ product:
         en: "{{string}}"
       description:
         en: "{{string}}"
-      outputPorttype: "{{enum: file | API | SQL | AI | gRPC | sFTP}}"
+      outputPortType: "{{enum: file | API | SQL | AI | gRPC | sFTP}}"
       format: "{{enum: TOON | JSON | XML | CSV | Excel | zip | plain text | GraphQL | MCP}}"
       authenticationMethod: "{{enum: OAuth | Token | API key | HTTP Basic | none}}"
       accessURL: "{{string: url}}"
@@ -58,7 +58,7 @@ product:
         en: "{{string}}"
       description:
         en: "{{string}}"
-      outputPorttype: "{{enum: file | API | SQL | AI | gRPC | sFTP}}"
+      outputPortType: "{{enum: file | API | SQL | AI | gRPC | sFTP}}"
       format: "{{enum: TOON | JSON | XML | CSV | Excel | zip | plain text | GraphQL | MCP}}"
       authenticationMethod: "{{enum: OAuth | Token | API key | HTTP Basic | none}}"
       specification: "{{enum: OAS | RAML | Slate | MCP}}"

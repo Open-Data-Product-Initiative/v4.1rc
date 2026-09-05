@@ -6,15 +6,15 @@
 pricingPlans:
   en:
   - name: Premium subscription 1 year
-    unit: recurring
+    unit: Recurring
     priceCurrency: EUR
-    price: 50.00
+    price: "50.00"
     billingDuration: year
     
   - name: Premium subcsription 1 month
-    unit: recurring
+    unit: Recurring
     priceCurrency: EUR
-    price: 8.00
+    price: "8.00"
     billingDuration: month
 ```
 
@@ -29,7 +29,7 @@ The Pricing object is general in nature and should be enough for common (80%) us
 
 > In case standardized options are not enough:
 
-```yml
+```text
 You can make extensions to the standard 
 with "x-" mechanism in order to fulfill 
 any industry specific needs. 
@@ -39,15 +39,15 @@ A suggestive example below
 pricingPlans:
   en:
   - name: Premium subscription 1 year
-    unit: recurring
+    unit: Recurring
     priceCurrency: EUR
-    price: 50.00
+    price: "50.00"
     billingDuration: year
     
   - x-name: Extension plan
     unit: custom
     priceCurrency: EUR
-    price: 50.00
+    price: "50.00"
     billingDuration: year
     
 ```
@@ -63,9 +63,9 @@ ODPS 4.0 introduces a modular referencing system that allows pricing plans to re
 
 **Example Component Reference Paths**
 
-* SLA: `#/product/SLA/gold` references gold SLA profile in the SLA component
-* Data Quality: `#/product/dataQuality/default` references default data quality profile in the data quality component
-* Access: `#/product/dataAccess/download` references download access profile in the SLA component
+* SLA: `#/product/SLA/declarative/gold` references gold SLA profile in the SLA component
+* Data Quality: `#/product/dataQuality/declarative/default` references default data quality profile in the data quality component
+* Access: `#/product/dataAccess/download` references download access profile in the data access component
 * Payment Gateway: `#/product/paymentGateways/paypal` references paypal payment profile in the Payment Gateways component
 
 In each of these component groups, you can expect a `default` option to be defined. This default serves as a baseline configuration, ensuring that even when no custom profile is referenced, a reliable and predictable fallback exists. For example, dataQuality.default, SLA.default, and paymentGateways.default can all be used to provide minimum guarantees. 
@@ -119,9 +119,9 @@ pricingPlans:
     en:
       - name: Standard API subscription 1 month
         priceCurrency: EUR
-        price: 50
+        price: "50"
         billingDuration: month
-        unit: recurring
+        unit: Recurring
         maxTransactionQuantity: 200000
         offering:
           - High Quality Events data
@@ -137,9 +137,9 @@ pricingPlans:
           $ref: '#/product/dataAccess/API'
       - name: Premium MCP 1 month
         priceCurrency: EUR
-        price: 500
+        price: "500"
         billingDuration: month
-        unit: recurring
+        unit: Recurring
         maxTransactionQuantity: 0
         offering:
           - High Quality Events data
@@ -148,9 +148,9 @@ pricingPlans:
         paymentGateway:
           $ref: '#/product/paymentGateways/agent'
         dataQuality:
-          $ref: '#/product/dataQuality/premium'
+          $ref: '#/product/dataQuality/declarative/premium'
         SLA:
-          $ref: '#/product/SLA/premium'
+          $ref: '#/product/SLA/declarative/premium'
         access:
           $ref: '#/product/dataAccess/agent'
           
@@ -219,4 +219,4 @@ pricingPlans:
 If you see something missing, described inaccurately or plain wrong, or you want to comment the specification, [raise an issue in Github](https://github.com/Open-Data-Product-Initiative/dev/issues)
 
 
-Join the [ODPS Discord](https://discord.gg/7KfnFxAc) to discuss the ideas and your needs! 
+Join the [ODPS Discord](https://discord.gg/7KfnFxAc) to discuss the ideas and your needs!

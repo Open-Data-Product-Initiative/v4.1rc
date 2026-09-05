@@ -12,7 +12,7 @@ Optional attributes are listed in own table and an example is given in the right
    Licensor:
       en:
          legalName: MindMote Oy
-         businessId: 12243434-12
+         businessID: 12243434-12
          email: contact@mindmote.fi
          taxID: "12243434-12"
          vatID: "12243434-12"
@@ -26,7 +26,7 @@ Optional attributes are listed in own table and an example is given in the right
          addressLocality: "Tampere"
          addressCountry: "Finland"
          aggregateRating: ""
-         ratingCount: "1245"
+         ratingCount: 1245
          slogan: ""
          parentOrganization: ""
       

@@ -10,7 +10,10 @@
             "format": "uri"
         },
         "version": {
-            "type": "string",
+            "type": [
+                "string",
+                "number"
+            ],
             "description": "Current ODPS version.",
             "examples": [
                 "v4.1",
@@ -64,7 +67,8 @@
                                         "invitation",
                                         "organisation",
                                         "dataspace",
-                                        "public"
+                                        "public",
+                                        "internal"
                                     ]
                                 },
                                 "status": {
@@ -298,9 +302,9 @@
             "type": "object",
             "properties": {
                 "declarative": {
-                    "type": "array",
+                    "type": "object",
                     "description": "defines the dimensions and aimed/intended SLA levels in defined unit.",
-                    "items": {
+                    "additionalProperties": {
                         "$ref": "#/$defs/SlaDefinition"
                     }
                 },
@@ -318,9 +322,9 @@
             "description": "Contains array of data quality dimensions with optional computational monitoring object. Under this element Data Quality is divided into declarative and executable parts.",
             "properties": {
                 "declarative": {
-                    "type": "array",
+                    "type": "object",
                     "description": "Captures target levels for defined quality dimensions.",
-                    "items": {
+                    "additionalProperties": {
                         "$ref": "#/$defs/DQDefinition"
                     }
                 },
@@ -334,16 +338,16 @@
             }
         },
         "DataAccess": {
-            "type": "array",
-            "description": "This object must always be present and named exactly default.",
-            "items": {
+            "type": "object",
+            "description": "Named data access definitions, commonly including default.",
+            "additionalProperties": {
                 "$ref": "#/$defs/DataAccessItem"
             }
         },
         "PaymentGateway": {
-            "type": "array",
-            "description": "This object must always be present and named exactly default.",
-            "items": {
+            "type": "object",
+            "description": "Named payment gateway definitions, commonly including default.",
+            "additionalProperties": {
                 "$ref": "#/$defs/PaymentGateways"
             }
         },
@@ -508,16 +512,20 @@
         },
         "DQDefinition": {
             "properties": {
-                "displayTitle": {
-                    "type": "array",
+                "displaytitle": {
+                    "type": "object",
                     "description": "Dimension title to be shown in UIs.",
-                    "items": {
-                        "type": "object",
-                        "$ref": "#/$defs/Languages"
-                    }
+                    "$ref": "#/$defs/Languages"
                 },
                 "description": {
-                    "type": "string",
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "$ref": "#/$defs/Languages"
+                        }
+                    ],
                     "description": "Describe the dimension so that it can be used for example in info boxes in UI."
                 },
                 "type": {
@@ -606,13 +614,10 @@
                     "type": "string",
                     "description": "the description of the SLA dimension"
                 },
-                "displayTitle": {
-                    "type": "array",
+                "displaytitle": {
+                    "type": "object",
                     "description": "Dimension title to be shown in UIs.",
-                    "items": {
-                        "type": "object",
-                        "$ref": "#/$defs/Languages"
-                    }
+                    "$ref": "#/$defs/Languages"
                 }
             }
         },
@@ -620,8 +625,9 @@
             "type": "object",
             "description": "Defines the Data Quality dimension.",
             "properties": {
-                "displayTitle": {
-                    "type": "string",
+                "displaytitle": {
+                    "type": "object",
+                    "$ref": "#/$defs/Languages",
                     "description": "Dimension title to be shown in various UIs.."
                 },
                 "dimension": {
@@ -654,7 +660,14 @@
                     ]
                 },
                 "description": {
-                    "type": "string",
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "$ref": "#/$defs/Languages"
+                        }
+                    ],
                     "description": "Describe the dimension so that it can be used for example in info boxes in UI."
                 }
             }
@@ -671,7 +684,10 @@
                     "description": "The primary currency used in pricing. Platforms are assumed to use this as primary currency if currency conversions are used to display product pricing in different locations for various currencies. If the unit is revenue-sharing, then this attribute value MUST be percentage."
                 },
                 "price": {
-                    "type": "string",
+                    "type": [
+                        "string",
+                        "number"
+                    ],
                     "description": "he offer price of a product, or of a price component, or revenue-sharing percentage."
                 },
                 "billingDuration": {
@@ -699,7 +715,8 @@
                         "Open-data",
                         "Value-based",
                         "On-request",
-                        "Trial"
+                        "Trial",
+                        "recurring"
                     ]
                 },
                 "maxTransactionQuantity": {
@@ -1001,6 +1018,15 @@
         },
         "DataHolder": {
             "type": "object",
+            "patternProperties": {
+                "^[a-z]{2}$": {
+                    "$ref": "#/$defs/DataHolderDetails"
+                }
+            },
+            "minProperties": 1
+        },
+        "DataHolderDetails": {
+            "type": "object",
             "properties": {
                 "legalName": {
                     "type": "string",
@@ -1124,7 +1150,10 @@
                     "description": "Points to documentation or developer reference for the payment gateway system."
                 },
                 "spec": {
-                    "type": "object",
+                    "type": [
+                        "object",
+                        "string"
+                    ],
                     "description": "Contains the executable or declarative logic for the payment gateway integration. Can be inline YAML, stringified logic, or link to external file."
                 }
             }

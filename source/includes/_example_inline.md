@@ -9,12 +9,16 @@ The objects are not defined inline, but instead references a reusable definition
 schema: https://opendataproducts.org/v4.1/schema/odps.yaml
 version: 4.1
 product:
-  en:
-    name: Pets of the year
-    productID: 123456are
-    visibility: private
-    status: draft
-    type: derived data
+  details:
+    en:
+      name: Pets of the year
+      productID: 123456are
+      valueProposition: Design a customised petstore using pet preference data.
+      description: This is an inline example of a petstore data product.
+      visibility: private
+      status: draft
+      productVersion: '0.1.0'
+      type: derived data
     
   serviceLevel:
     slas:

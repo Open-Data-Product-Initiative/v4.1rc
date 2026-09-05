@@ -21,7 +21,7 @@ By embedding both primary and related KPI connections directly into the product 
 
 ```yml
 schema: https://opendataproducts.org/v4.1/schema/odps.yaml
-## JSON schema: https://opendataproducts.org/v4.1/schema/odps.json
+# JSON schema: https://opendataproducts.org/v4.1/schema/odps.json
 version: 4.1
 product:
   productStrategy:
@@ -49,7 +49,7 @@ product:
     productKPIs:
       - id: kpi-detection-coverage
         name: Event Detection Coverage
-        description: % of reported incidents captured in real time
+        description: '% of reported incidents captured in real time'
         unit: percentage
         target: 95
         direction: at_least
@@ -95,4 +95,3 @@ product:
 - **Recommended:** ≥1 `productKPIs` with `unit`, `target`, and `calculation`.  
 - **Optional:** `relatedKPIs` for secondary/side effects.  
 - **Traceability:** use shared KPI `id`s to enable cross‑product roll‑ups against the same business KPI.
-

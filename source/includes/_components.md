@@ -30,7 +30,7 @@ Components:
         - en: Default SLA for internal and non-paying users
       slas:
         - dimension: uptime
-          displayTitle:
+          displaytitle:
             en: Uptime
           objective: 90
           unit: percent
@@ -46,7 +46,7 @@ Components:
         - en: Premium SLA for external users or partners
       slas:
         - dimension: uptime
-          displayTitle:
+          displaytitle:
             en: Uptime
           objective: 99
           unit: percent

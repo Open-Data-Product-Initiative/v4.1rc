@@ -203,7 +203,7 @@ product:
         en: Access to zipped package
       description:
         en: Latest Dataset and Resources
-      outputPorttype: file
+      outputPortType: file
       format: zip
       accessURL: url to file as zip
     dataonly:
@@ -211,11 +211,11 @@ product:
         en: Access to latest dataset
       description:
         en: Latest Dataset
-      outputPorttype: file
+      outputPortType: file
       format: CSV
       accessURL: url to file as CSV
     API:
-      outputPorttype: API
+      outputPortType: API
       authenticationMethod: OAuth
       specification: OAS
       format: JSON
@@ -223,11 +223,11 @@ product:
       specsURL: 'https://data.cms.gov/provr-enrollment/api-docs'
       documentationURL: 'https://data.cms.gov/provr-enrollment/docs'
     Agent:
-      outputPorttype: AI
+      outputPortType: AI
       description:
         en: MCP interface for structured data access and agent interaction.
       authenticationMethod: Token
-      specification: MCP 2025-03-26
+      specification: MCP
       format: MCP
       specsURL: 'https://urbanpulse.ai/llms.txt'
       documentationURL: 'https://urbanpulse.ai/llms-full.txt'
@@ -236,7 +236,7 @@ product:
       description:
         en: Stripe-based API payment gateway
       type: Stripe
-      version: 1
+      version: '1'
       reference: 'https://docs.stripe.com/'
       spec: |
         stripe.createCheckoutSession({
@@ -249,7 +249,7 @@ product:
       description:
         en: Payment gateway for AI agents
       type: Axio
-      version: 1
+      version: '1'
       reference: 'https://www.x402.org/'
       spec: |
         paymentMiddleware("0xYourAddress", {"/mcp-access": "$0.01"});
@@ -342,6 +342,6 @@ product:
       addressLocality: Tampere
       addressCountry: Finland
       aggregateRating: ''
-      ratingCount: '1245'
+      ratingCount: 1245
       slogan: ''
       parentOrganization: ''

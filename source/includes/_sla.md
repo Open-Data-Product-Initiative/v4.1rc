@@ -33,7 +33,7 @@ The SLA object is general in nature and should be enough for common (80%) use ca
 
 > In case standardized options are not enough:
 
-```yml
+```text
 The SLA object is general in nature and should 
 be enough for common (80%) use cases. 
 
@@ -45,14 +45,12 @@ A suggestive example below
 
 SLA:
   declarative:
-    - x-dimension: custom
+    default:
+      x-dimension: custom
       displaytitle:
-        - en: Custom SLA
+        en: Custom SLA
       objective: 99
       unit: percent
-    - dimension: responseTime
-      objective: 200
-      unit: milliseconds
 
 ```
 
@@ -65,16 +63,18 @@ SLA:
 
 SLA:
   declarative:
-    - dimension: uptime
-      displaytitle:
-        - en: Uptime
-      objective: 99
-      unit: percent
-      weight: 50
-    - dimension: responseTime
-      objective: 200
-      unit: milliseconds
-      weight: 30
+    default:
+      dimensions:
+        - dimension: uptime
+          displaytitle:
+            en: Uptime
+          objective: 99
+          unit: percent
+          weight: 50
+        - dimension: responseTime
+          objective: 200
+          unit: milliseconds
+          weight: 30
 
 ```
 
@@ -196,14 +196,14 @@ SLA:
 |---|---|---|---|
 | **SLA** | element | - | Binds the SLA-related elements and attributes together. |
 | **$ref** | filepath or valid URL | - | Define the SLA in external file for reuse purposes, example  `$ref: 'https://example.org/slas/all-packages.yaml'` See example. This makes it easy to keep related profiles (e.g. default, premium, gold) together, apply versioning and validation once, and publish all variants from a single repo or source. <br/><br/>The same pattern can be used in individual SLA profiles instead of doing it inline. See example. This gives finer control if each SLA is owned or updated by a different team, but increases the number of files to track and host.|
-| **default** | object | - | This object must always be present and named exactly `default` if SLA object is used. It acts as the fallback or baseline SLA profile. <br/><br/>Users are free to define additional named profiles such as `premium`, `gold`, etc., in parallel to the default. <br/><br/>In the example above, both `default` and `premium` profiles are included. These variants can be referenced from pricing plans or other objects. <br/><br/>**Example reference usage:** <br/> `SLA: $ref: '#/product/SLA/default'` |
+| **default** | object | - | This object must always be present and named exactly `default` if SLA object is used. It acts as the fallback or baseline SLA profile. <br/><br/>Users are free to define additional named profiles such as `premium`, `gold`, etc., in parallel to the default. <br/><br/>In the example above, both `default` and `premium` profiles are included. These variants can be referenced from pricing plans or other objects. <br/><br/>**Example reference usage:** <br/> `SLA: $ref: '#/product/SLA/declarative/default'` |
 | **dimensions** | array | - | Contains one or more SLA dimension objects. Each defines a measurable SLA metric such as uptime or responseTime. |
 | **dimension** | attribute | string, one of: *latency, uptime, responseTime, errorRate, endOfSupport, endOfLife, updateFrequency, timeToDetect, timeToNotify, timeToRepair, emailResponseTime* | Defines the SLA dimension. |
 | **objective** | attribute | integer | Target level to be achieved for the dimension (e.g., 99). |
 | **unit** | attribute | Options: percent, milliseconds, seconds, minutes, days, weeks, months, years, never, date, null | Measurement unit for the SLA objective. If "date" is used, format should be dd/mm/yyyy. |
 | **weight** | attribute | integer | Optional. Relative importance as percentage of the SLA dimension when calculating the product's overall SLA score. Must be an integer (no decimals). User-editable. |
-| **displayTitle** | array | - | Dimension title to be shown in UIs. Localized per language. |
-| **description** | array | - | Description of the SLA package or specific dimension, localized per language. |
+| **displaytitle** | object | - | Dimension title to be shown in UIs. Localized per language. |
+| **description** | object | - | Description of the SLA package or specific dimension, localized per language. |
 | **executable** | element | - | Grouping element for SLA monitoring logic. Monitoring definitions are provided as code in the `spec` field for each dimension. |
 | **type** | attribute | string | Name of the monitoring system (e.g., Prometheus). Must support SLA-as-code. |
 | **spec** | element | YAML/URL/string | Monitoring logic for the defined dimension. Can be inline YAML, plain string, or URL to code file. |

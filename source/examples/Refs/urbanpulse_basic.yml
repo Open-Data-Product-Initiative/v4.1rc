@@ -94,7 +94,7 @@ product:
         en: Access to zipped package
       description:
         en: Latest Dataset and Resources
-      outputPorttype: file
+      outputPortType: file
       format: zip
       accessURL: url to file as zip
   support:
@@ -172,7 +172,7 @@ product:
   dataHolder:
     en:
       legalName: MindMote Oy
-      businessId: 12243434-12
+      businessID: 12243434-12
       email: contact@mindmote.fi
       taxID: 12243434-12
       vatID: 12243434-12
@@ -186,6 +186,6 @@ product:
       addressLocality: Tampere
       addressCountry: Finland
       aggregateRating: ''
-      ratingCount: '1245'
+      ratingCount: 1245
       slogan: ''
       parentOrganization: ''

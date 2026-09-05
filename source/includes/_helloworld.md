@@ -6,7 +6,7 @@
 
 ---
 schema: 'https://opendataproducts.org/v4.1/schema/odps.yaml'
-version: 4.1
+version: '4.1'
 product:
   productStrategy:
     objectives:
@@ -30,7 +30,7 @@ product:
     productKPIs:
       - id: kpi-detection-coverage
         name: Event Detection Coverage
-        description: % of reported incidents captured in real time
+        description: '% of reported incidents captured in real time'
         unit: percentage
         target: 95
         direction: at_least
@@ -63,7 +63,7 @@ product:
         sports events — making it accessible through APIs and dashboards for
         internal and future external use.
       productSeries: SmartCity Living Data Products
-      visibility: internal
+      visibility: private
       status: production
       productVersion: 0.1.0
       versionNotes: >-
@@ -91,9 +91,9 @@ product:
       en:
         - name: Basic Reader
           priceCurrency: USD
-          price: 0
+          price: '0'
           billingDuration: month
-          unit: recurring
+          unit: Recurring
           maxTransactionQuantity: 100
           offering:
             - Standard access to event metadata
@@ -106,16 +106,16 @@ product:
           paymentGateway:
             $ref: '#/product/paymentGateways/default'
           dataQuality:
-            $ref: '#/product/dataQuality/default'
+            $ref: '#/product/dataQuality/declarative/default'
           SLA:
-            $ref: '#/product/SLA/default'
+            $ref: '#/product/SLA/declarative/default'
           access:
             $ref: '#/product/dataAccess/API'
         - name: Extended User
           priceCurrency: USD
-          price: 300
+          price: '300'
           billingDuration: month
-          unit: recurring
+          unit: Recurring
           maxTransactionQuantity: 1000
           offering:
             - Prioritized SQL access during high-demand periods
@@ -128,16 +128,16 @@ product:
           paymentGateway:
             $ref: '#/product/paymentGateways/default'
           dataQuality:
-            $ref: '#/product/dataQuality/default'
+            $ref: '#/product/dataQuality/declarative/default'
           SLA:
-            $ref: '#/product/SLA/default'
+            $ref: '#/product/SLA/declarative/default'
           access:
             $ref: '#/product/dataAccess/API'
         - name: High Volume Access
           priceCurrency: USD
-          price: 2000
+          price: '2000'
           billingDuration: month
-          unit: recurring
+          unit: Recurring
           maxTransactionQuantity: 500000
           offering:
             - Dedicated API channel for bulk usage
@@ -147,9 +147,9 @@ product:
           paymentGateway:
             $ref: '#/product/paymentGateways/agent'
           dataQuality:
-            $ref: '#/product/dataQuality/premium'
+            $ref: '#/product/dataQuality/declarative/premium'
           SLA:
-            $ref: '#/product/SLA/premium'
+            $ref: '#/product/SLA/declarative/premium'
           access:
             $ref: '#/product/dataAccess/Agent'
   SLA:
@@ -189,11 +189,11 @@ product:
             objective: 5
             unit: minutes
     support:
-    phoneNumber: '+971508976456'
-    phoneServiceHours: Mon–Fri 8am–4pm (GMT)
-    email: support@opendataproducts.org
-    emailServiceHours: Mon–Fri 8am–4pm (GMT)
-    documentationURL: ''
+      phoneNumber: '+971508976456'
+      phoneServiceHours: Mon–Fri 8am–4pm (GMT)
+      email: support@opendataproducts.org
+      emailServiceHours: Mon–Fri 8am–4pm (GMT)
+      documentationURL: 'https://opendataproducts.org/'
 
   dataQuality:
     declarative:
@@ -245,19 +245,19 @@ product:
         en: Access to zipped package
       description:
         en: Latest Dataset and Resources
-      outputPorttype: file
+      outputPortType: file
       format: zip
-      accessURL: url to file as zip
+      accessURL: 'https://urbanpulse.ai/downloads/events.zip'
     dataonly:
       name:
         en: Access to latest dataset
       description:
         en: Latest Dataset
-      outputPorttype: file
+      outputPortType: file
       format: CSV
-      accessURL: url to file as CSV
+      accessURL: 'https://urbanpulse.ai/downloads/events.csv'
     API:
-      outputPorttype: API
+      outputPortType: API
       authenticationMethod: OAuth
       specification: OAS
       format: JSON
@@ -265,11 +265,11 @@ product:
       specsURL: 'https://data.cms.gov/provr-enrollment/api-docs'
       documentationURL: 'https://data.cms.gov/provr-enrollment/docs'
     Agent:
-      outputPorttype: AI
+      outputPortType: AI
       description:
         en: MCP interface for structured data access and agent interaction.
       authenticationMethod: Token
-      specification: MCP 2025-03-26
+      specification: MCP
       format: MCP
       specsURL: 'https://urbanpulse.ai/llms.txt'
       documentationURL: 'https://urbanpulse.ai/llms-full.txt'
@@ -278,7 +278,7 @@ product:
       description:
         en: Stripe-based API payment gateway
       type: Stripe
-      version: 1
+      version: '1'
       reference: 'https://docs.stripe.com/'
       spec: |
         stripe.createCheckoutSession({
@@ -291,7 +291,7 @@ product:
       description:
         en: Payment gateway for AI agents
       type: Axio
-      version: 1
+      version: '1'
       reference: 'https://www.x402.org/'
       spec: |
         paymentMiddleware("0xYourAddress", {"/mcp-access": "$0.01"});
@@ -365,7 +365,7 @@ product:
   dataHolder:
     en:
       legalName: MindMote Oy
-      businessId: 12243434-12
+      businessID: 12243434-12
       email: contact@mindmote.fi
       taxID: 12243434-12
       vatID: 12243434-12
@@ -379,7 +379,7 @@ product:
       addressLocality: Tampere
       addressCountry: Finland
       aggregateRating: ''
-      ratingCount: '1245'
+      ratingCount: 1245
       slogan: ''
       parentOrganization: ''
 

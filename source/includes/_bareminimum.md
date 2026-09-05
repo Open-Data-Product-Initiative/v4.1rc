@@ -9,11 +9,15 @@ Example data product with just the mandatory elements and attributes. This is th
 schema: https://opendataproducts.org/v4.1/schema/odps.yaml
 version: 4.1
 product:
-  en:
-    name: Pets of the year
-    productID: 123456are
-    visibility: private
-    status: draft
-    type: derived data
+  details:
+    en:
+      name: Pets of the year
+      productID: 123456are
+      valueProposition: Design a customised petstore using pet preference data.
+      description: This is a minimal example of a petstore data product.
+      visibility: private
+      status: draft
+      productVersion: '0.1.0'
+      type: derived data
 
 ```

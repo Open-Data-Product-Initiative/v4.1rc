@@ -15,7 +15,7 @@ dataQuality:
           weight: 60
         - dimension: completeness
           displaytitle:
-            - en: Data Completeness (percent)
+            en: Data Completeness (percent)
           objective: 90
           unit: percentage
           weight: 40
@@ -52,7 +52,7 @@ One of the key features of ODPS is the ability to **reuse** named data quality p
 
 > referencing examples:
 
-```yml
+```text
   $ref: '#/product/dataQuality/declarative/default'
 
   ...
@@ -120,7 +120,7 @@ dataQuality:
           weight: 60
         - dimension: completeness
           displaytitle:
-            - en: Data Completeness (percent)
+            en: Data Completeness (percent)
           objective: 90
           unit: percentage
           weight: 40
@@ -155,8 +155,9 @@ dataQuality:
       type: SodaCL
       reference: https://docs.soda.io/soda-cl/soda-cl-overview.html
       spec:
-        - require_unique(member_id) 
-        - require_range(age_band, 18, 100)
+        checks:
+          - require_unique(member_id)
+          - require_range(age_band, 18, 100)
     - dimension: completeness
       type: DQOps
       version: 1.6.0 
@@ -206,9 +207,9 @@ dataQuality:
 | **unit** | attribute | string. One of: *percentage, number* | Defines the unit used in stating the target quality level. |
 | **weight** | attribute | integer | Optional. Relative importance as percentage of the dimension when calculating the product's overall Data Quality score. Must be an integer (no decimals). |
 | **executable** | element | - | Grouping element that collects together data quality monitoring rules. You can define monitoring patterns as code under this element for each dimension. The actual as-code part is defined in the `spec` element. |
-| **displaytitle** | array | - | Dimension title to be shown in various UIs. Array contains title(s) in desired language(s). |
+| **displaytitle** | object | - | Dimension title to be shown in various UIs. Object contains title(s) in desired language(s). |
 | **en** | attribute | [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) defined 2-letter codes | Binds the text elements together in a given language. Multilanguage support is implemented by duplicating content under other ISO language codes. |
-| **description** | array | - | Describe the dimension so that it can be used for example in info boxes in UI. Array contains descriptions in desired language(s). |
+| **description** | object | - | Describe the dimension so that it can be used for example in info boxes in UI. Object contains descriptions in desired language(s). |
 | **type** | attribute | string, one of: [SodaCL](https://docs.soda.io/soda-cl/soda-cl-overview.html), [Montecarlo](https://docs.getmontecarlo.com/docs/monitors-as-code), [DQOps](https://dqops.com/docs/),  [Great Expectations](https://docs.greatexpectations.io/docs/reference/learn/data_quality_use_cases/dq_use_cases_lp), [OpenMetadata](https://docs.open-metadata.org/v1.12.x/how-to-guides/data-quality-observability/quality/data-quality-as-code), Custom | Data Quality Monitoring as code system name. Use one of the predefined options only. With _Custom_ type you can use your in-house solution. |
 | **version** | attribute | string | The version of DQ monitoring tool used. |
 | **reference** | URL | Valid URL | Provide URL pointing to the reference documentation. |
@@ -217,4 +218,4 @@ dataQuality:
 
 If you see something missing, described inaccurately or plain wrong, or you want to comment the specification, [raise an issue in Github](https://github.com/Open-Data-Product-Initiative/dev/issues)
 
-Or join the [ODPS Discord](https://discord.gg/7KfnFxAc) to discuss the ideas and your needs! 
+Or join the [ODPS Discord](https://discord.gg/7KfnFxAc) to discuss the ideas and your needs!

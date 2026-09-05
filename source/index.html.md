@@ -145,9 +145,13 @@ The right column contains YAML formatted examples of how the specification is us
 ```yml
 dataQuality:
   declarative:
-    - dimension: accuracy
-      displaytitle:
-      - en: Data Accuracy (percent)
+    default:
+      dimensions:
+        - dimension: accuracy
+          displaytitle:
+            en: Data Accuracy (percent)
+          objective: 90
+          unit: percentage
 ```
 
 
@@ -172,4 +176,3 @@ product:
 | **schema** | URL | Valid URL. See more from [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986). | **REQUIRED** Defines the URL of Schema. Used often for validation purposes. |
 | **version** | string | This is the version of ODPS, for example dev or 4.1 | **REQUIRED** Defines the ODPS version. |
 | **product** | element | root element | **REQUIRED** Root element to tie all together. |
-

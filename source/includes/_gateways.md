@@ -22,7 +22,7 @@ Named gateway definitions (e.g., `default`, `Agent`) can be **reused across pric
 
 > referencing examples:
 
-```yml
+```text
   $ref: '#/Product/paymentGateways/default'
 
   ...
@@ -52,7 +52,7 @@ paymentGateways:
     description:
       en: API consumption payment gateway for humans
     type: Stripe
-    version: 1
+    version: '1'
     reference: 'https://docs.stripe.com/'
     spec: |
       // Replace this with your actual implementation or link
@@ -67,7 +67,7 @@ paymentGateways:
     description:
       en: Payment gateway for AI agents
     type: Axio
-    version: 1
+    version: '1'
     reference: 'https://www.x402.org/'
     spec: |
       paymentMiddleware("0xYourAddress", {"/your-endpoint": "$0.01"});
