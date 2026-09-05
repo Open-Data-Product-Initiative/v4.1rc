@@ -295,4 +295,4 @@ properties:
         properties:
           en:
             type: object
-            required: [legalName, email, URL, streetAddress, postalCode, addressLocality, addressCountry]
+            required: [legalName]
