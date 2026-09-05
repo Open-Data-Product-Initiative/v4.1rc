@@ -23,7 +23,7 @@ product:
       tags:
         - checkout
         - orders
-        .... CUT OFF FOR SAKE OF SPACE....
+        - cut-off-for-example
 
   details: 
     en:

@@ -665,9 +665,13 @@ Development of the specification is under the umbrella of the Linux Foundation. 
 </blockquote>
 <div class="highlight"><pre class="highlight yaml"><code><span class="na">dataQuality</span><span class="pi">:</span>
   <span class="na">declarative</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">dimension</span><span class="pi">:</span> <span class="s">accuracy</span>
-      <span class="na">displaytitle</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">en</span><span class="pi">:</span> <span class="s">Data Accuracy (percent)</span>
+    <span class="na">default</span><span class="pi">:</span>
+      <span class="na">dimensions</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">dimension</span><span class="pi">:</span> <span class="s">accuracy</span>
+          <span class="na">displaytitle</span><span class="pi">:</span>
+            <span class="na">en</span><span class="pi">:</span> <span class="s">Data Accuracy (percent)</span>
+          <span class="na">objective</span><span class="pi">:</span> <span class="m">90</span>
+          <span class="na">unit</span><span class="pi">:</span> <span class="s">percentage</span>
 </code></pre></div><h1 id='document-level-structure'>Document level structure</h1>
 <p>Here&#39;s the list of attributes which can occur at the document root level. In the following description, if a field is not explicitly <strong>REQUIRED</strong> or described with a MUST or SHALL, it can be considered OPTIONAL. Optional attributes are listed in own table and examples are given on the right column. </p>
 
@@ -993,7 +997,7 @@ Development of the specification is under the umbrella of the Linux Foundation. 
 <p>Example of catalog object usage:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight yaml"><code><span class="na">schema</span><span class="pi">:</span> <span class="s">https://opendataproducts.org/v4.1/schema/odps.yaml</span>
-<span class="c1">## JSON schema: https://opendataproducts.org/v4.1/schema/odps.json</span>
+<span class="c1"># JSON schema: https://opendataproducts.org/v4.1/schema/odps.json</span>
 <span class="na">version</span><span class="pi">:</span> <span class="m">4.1</span>
 <span class="na">product</span><span class="pi">:</span>
   <span class="na">productStrategy</span><span class="pi">:</span>
@@ -1021,7 +1025,7 @@ Development of the specification is under the umbrella of the Linux Foundation. 
     <span class="na">productKPIs</span><span class="pi">:</span>
       <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">kpi-detection-coverage</span>
         <span class="na">name</span><span class="pi">:</span> <span class="s">Event Detection Coverage</span>
-        <span class="na">description</span><span class="pi">:</span> <span class="err">%</span> <span class="s">of reported incidents captured in real time</span>
+        <span class="na">description</span><span class="pi">:</span> <span class="s1">'</span><span class="s">%</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">reported</span><span class="nv"> </span><span class="s">incidents</span><span class="nv"> </span><span class="s">captured</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">real</span><span class="nv"> </span><span class="s">time'</span>
         <span class="na">unit</span><span class="pi">:</span> <span class="s">percentage</span>
         <span class="na">target</span><span class="pi">:</span> <span class="m">95</span>
         <span class="na">direction</span><span class="pi">:</span> <span class="s">at_least</span>
@@ -1287,25 +1291,23 @@ Development of the specification is under the umbrella of the Linux Foundation. 
 <blockquote>
 <p>In case standardized options are not enough:</p>
 </blockquote>
-<div class="highlight"><pre class="highlight yaml"><code><span class="s">The SLA object is general in nature and should</span> 
-<span class="s">be enough for common (80%) use cases.</span> 
+<div class="highlight"><pre class="highlight plaintext"><code>The SLA object is general in nature and should 
+be enough for common (80%) use cases. 
 
-<span class="s">You can make extensions to the standard</span> 
-<span class="s">with "x-" mechanism in order to fulfill</span> 
-<span class="s">any industry specific needs.</span> 
+You can make extensions to the standard 
+with "x-" mechanism in order to fulfill 
+any industry specific needs. 
 
-<span class="s">A suggestive example below</span> 
+A suggestive example below 
 
-<span class="na">SLA</span><span class="pi">:</span>
-  <span class="na">declarative</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">x-dimension</span><span class="pi">:</span> <span class="s">custom</span>
-      <span class="na">displaytitle</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="na">en</span><span class="pi">:</span> <span class="s">Custom SLA</span>
-      <span class="na">objective</span><span class="pi">:</span> <span class="m">99</span>
-      <span class="na">unit</span><span class="pi">:</span> <span class="s">percent</span>
-    <span class="pi">-</span> <span class="na">dimension</span><span class="pi">:</span> <span class="s">responseTime</span>
-      <span class="na">objective</span><span class="pi">:</span> <span class="m">200</span>
-      <span class="na">unit</span><span class="pi">:</span> <span class="s">milliseconds</span>
+SLA:
+  declarative:
+    default:
+      x-dimension: custom
+      displaytitle:
+        en: Custom SLA
+      objective: 99
+      unit: percent
 
 </code></pre></div><h2 id='sla-can-be-defined-with-11-standardized-dimensions-with-decoupled-everything-as-code-monitoring'>SLA can be defined with 11 standardized dimensions with decoupled Everything as Code monitoring</h2>
 <blockquote>
@@ -1314,16 +1316,18 @@ Development of the specification is under the umbrella of the Linux Foundation. 
 <div class="highlight"><pre class="highlight yaml"><code>
 <span class="na">SLA</span><span class="pi">:</span>
   <span class="na">declarative</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">dimension</span><span class="pi">:</span> <span class="s">uptime</span>
-      <span class="na">displaytitle</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="na">en</span><span class="pi">:</span> <span class="s">Uptime</span>
-      <span class="na">objective</span><span class="pi">:</span> <span class="m">99</span>
-      <span class="na">unit</span><span class="pi">:</span> <span class="s">percent</span>
-      <span class="na">weight</span><span class="pi">:</span> <span class="m">50</span>
-    <span class="pi">-</span> <span class="na">dimension</span><span class="pi">:</span> <span class="s">responseTime</span>
-      <span class="na">objective</span><span class="pi">:</span> <span class="m">200</span>
-      <span class="na">unit</span><span class="pi">:</span> <span class="s">milliseconds</span>
-      <span class="na">weight</span><span class="pi">:</span> <span class="m">30</span>
+    <span class="na">default</span><span class="pi">:</span>
+      <span class="na">dimensions</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">dimension</span><span class="pi">:</span> <span class="s">uptime</span>
+          <span class="na">displaytitle</span><span class="pi">:</span>
+            <span class="na">en</span><span class="pi">:</span> <span class="s">Uptime</span>
+          <span class="na">objective</span><span class="pi">:</span> <span class="m">99</span>
+          <span class="na">unit</span><span class="pi">:</span> <span class="s">percent</span>
+          <span class="na">weight</span><span class="pi">:</span> <span class="m">50</span>
+        <span class="pi">-</span> <span class="na">dimension</span><span class="pi">:</span> <span class="s">responseTime</span>
+          <span class="na">objective</span><span class="pi">:</span> <span class="m">200</span>
+          <span class="na">unit</span><span class="pi">:</span> <span class="s">milliseconds</span>
+          <span class="na">weight</span><span class="pi">:</span> <span class="m">30</span>
 
 </code></pre></div>
 <table><thead>
@@ -1498,7 +1502,7 @@ Development of the specification is under the umbrella of the Linux Foundation. 
 <td><strong>default</strong></td>
 <td>object</td>
 <td>-</td>
-<td>This object must always be present and named exactly <code>default</code> if SLA object is used. It acts as the fallback or baseline SLA profile. <br/><br/>Users are free to define additional named profiles such as <code>premium</code>, <code>gold</code>, etc., in parallel to the default. <br/><br/>In the example above, both <code>default</code> and <code>premium</code> profiles are included. These variants can be referenced from pricing plans or other objects. <br/><br/><strong>Example reference usage:</strong> <br/> <code>SLA: $ref: &#39;#/product/SLA/default&#39;</code></td>
+<td>This object must always be present and named exactly <code>default</code> if SLA object is used. It acts as the fallback or baseline SLA profile. <br/><br/>Users are free to define additional named profiles such as <code>premium</code>, <code>gold</code>, etc., in parallel to the default. <br/><br/>In the example above, both <code>default</code> and <code>premium</code> profiles are included. These variants can be referenced from pricing plans or other objects. <br/><br/><strong>Example reference usage:</strong> <br/> <code>SLA: $ref: &#39;#/product/SLA/declarative/default&#39;</code></td>
 </tr>
 <tr>
 <td><strong>dimensions</strong></td>
@@ -1531,14 +1535,14 @@ Development of the specification is under the umbrella of the Linux Foundation. 
 <td>Optional. Relative importance as percentage of the SLA dimension when calculating the product&#39;s overall SLA score. Must be an integer (no decimals). User-editable.</td>
 </tr>
 <tr>
-<td><strong>displayTitle</strong></td>
-<td>array</td>
+<td><strong>displaytitle</strong></td>
+<td>object</td>
 <td>-</td>
 <td>Dimension title to be shown in UIs. Localized per language.</td>
 </tr>
 <tr>
 <td><strong>description</strong></td>
-<td>array</td>
+<td>object</td>
 <td>-</td>
 <td>Description of the SLA package or specific dimension, localized per language.</td>
 </tr>
@@ -1623,7 +1627,7 @@ Development of the specification is under the umbrella of the Linux Foundation. 
           <span class="na">weight</span><span class="pi">:</span> <span class="m">60</span>
         <span class="pi">-</span> <span class="na">dimension</span><span class="pi">:</span> <span class="s">completeness</span>
           <span class="na">displaytitle</span><span class="pi">:</span>
-            <span class="pi">-</span> <span class="na">en</span><span class="pi">:</span> <span class="s">Data Completeness (percent)</span>
+            <span class="na">en</span><span class="pi">:</span> <span class="s">Data Completeness (percent)</span>
           <span class="na">objective</span><span class="pi">:</span> <span class="m">90</span>
           <span class="na">unit</span><span class="pi">:</span> <span class="s">percentage</span>
           <span class="na">weight</span><span class="pi">:</span> <span class="m">40</span>
@@ -1664,11 +1668,11 @@ The <code>dataQuality</code> object consists of two parts:</p>
 <blockquote>
 <p>referencing examples:</p>
 </blockquote>
-<div class="highlight"><pre class="highlight yaml"><code>  <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/dataQuality/declarative/default'</span>
+<div class="highlight"><pre class="highlight plaintext"><code>  $ref: '#/product/dataQuality/declarative/default'
 
-  <span class="s">...</span>
+  ...
 
-  <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/dataQuality/declarative/premium'</span>
+  $ref: '#/product/dataQuality/declarative/premium'
 </code></pre></div>
 <p><strong>Referencing Examples:</strong>
 To reference a defined quality profile from another part of your YAML (e.g., pricing plan): <code>$ref: &#39;#/product/dataQuality/declarative/default&#39;</code>. Or reference a named premium quality package: <code>$ref: &#39;#/product/dataQuality/declarative/premium&#39;</code> Use this component to clearly communicate both intentions and verifiable guarantees about data quality—whether you&#39;re reporting to stakeholders, building trust with customers, or enabling automated validation through modern DQ tools. </p>
@@ -1754,7 +1758,7 @@ any industry specific needs. </p>
           <span class="na">weight</span><span class="pi">:</span> <span class="m">60</span>
         <span class="pi">-</span> <span class="na">dimension</span><span class="pi">:</span> <span class="s">completeness</span>
           <span class="na">displaytitle</span><span class="pi">:</span>
-            <span class="pi">-</span> <span class="na">en</span><span class="pi">:</span> <span class="s">Data Completeness (percent)</span>
+            <span class="na">en</span><span class="pi">:</span> <span class="s">Data Completeness (percent)</span>
           <span class="na">objective</span><span class="pi">:</span> <span class="m">90</span>
           <span class="na">unit</span><span class="pi">:</span> <span class="s">percentage</span>
           <span class="na">weight</span><span class="pi">:</span> <span class="m">40</span>
@@ -1789,8 +1793,9 @@ any industry specific needs. </p>
       <span class="na">type</span><span class="pi">:</span> <span class="s">SodaCL</span>
       <span class="na">reference</span><span class="pi">:</span> <span class="s">https://docs.soda.io/soda-cl/soda-cl-overview.html</span>
       <span class="na">spec</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="s">require_unique(member_id)</span> 
-        <span class="pi">-</span> <span class="s">require_range(age_band, 18, 100)</span>
+        <span class="na">checks</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s">require_unique(member_id)</span>
+          <span class="pi">-</span> <span class="s">require_range(age_band, 18, 100)</span>
     <span class="pi">-</span> <span class="na">dimension</span><span class="pi">:</span> <span class="s">completeness</span>
       <span class="na">type</span><span class="pi">:</span> <span class="s">DQOps</span>
       <span class="na">version</span><span class="pi">:</span> <span class="s">1.6.0</span> 
@@ -1885,9 +1890,9 @@ any industry specific needs. </p>
 </tr>
 <tr>
 <td><strong>displaytitle</strong></td>
-<td>array</td>
+<td>object</td>
 <td>-</td>
-<td>Dimension title to be shown in various UIs. Array contains title(s) in desired language(s).</td>
+<td>Dimension title to be shown in various UIs. Object contains title(s) in desired language(s).</td>
 </tr>
 <tr>
 <td><strong>en</strong></td>
@@ -1897,9 +1902,9 @@ any industry specific needs. </p>
 </tr>
 <tr>
 <td><strong>description</strong></td>
-<td>array</td>
+<td>object</td>
 <td>-</td>
-<td>Describe the dimension so that it can be used for example in info boxes in UI. Array contains descriptions in desired language(s).</td>
+<td>Describe the dimension so that it can be used for example in info boxes in UI. Object contains descriptions in desired language(s).</td>
 </tr>
 <tr>
 <td><strong>type</strong></td>
@@ -1929,7 +1934,7 @@ any industry specific needs. </p>
 
 <p>If you see something missing, described inaccurately or plain wrong, or you want to comment the specification, <a href="https://github.com/Open-Data-Product-Initiative/dev/issues">raise an issue in Github</a></p>
 
-<p>Or join the <a href="https://discord.gg/7KfnFxAc">ODPS Discord</a> to discuss the ideas and your needs! </p>
+<p>Or join the <a href="https://discord.gg/7KfnFxAc">ODPS Discord</a> to discuss the ideas and your needs!</p>
 <h1 id='data-pricing-plans'>Data Pricing Plans</h1>
 <blockquote>
 <p>Template structure of Data Pricing Plans array component:</p>
@@ -1937,15 +1942,15 @@ any industry specific needs. </p>
 <div class="highlight"><pre class="highlight yaml"><code><span class="na">pricingPlans</span><span class="pi">:</span>
   <span class="na">en</span><span class="pi">:</span>
   <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Premium subscription 1 year</span>
-    <span class="na">unit</span><span class="pi">:</span> <span class="s">recurring</span>
+    <span class="na">unit</span><span class="pi">:</span> <span class="s">Recurring</span>
     <span class="na">priceCurrency</span><span class="pi">:</span> <span class="s">EUR</span>
-    <span class="na">price</span><span class="pi">:</span> <span class="m">50.00</span>
+    <span class="na">price</span><span class="pi">:</span> <span class="s2">"</span><span class="s">50.00"</span>
     <span class="na">billingDuration</span><span class="pi">:</span> <span class="s">year</span>
 
   <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Premium subcsription 1 month</span>
-    <span class="na">unit</span><span class="pi">:</span> <span class="s">recurring</span>
+    <span class="na">unit</span><span class="pi">:</span> <span class="s">Recurring</span>
     <span class="na">priceCurrency</span><span class="pi">:</span> <span class="s">EUR</span>
-    <span class="na">price</span><span class="pi">:</span> <span class="m">8.00</span>
+    <span class="na">price</span><span class="pi">:</span> <span class="s2">"</span><span class="s">8.00"</span>
     <span class="na">billingDuration</span><span class="pi">:</span> <span class="s">month</span>
 </code></pre></div>
 <p><strong>Standardized data pricing plans are crucial for transparency, scalability, and customer trust.</strong> They ensure that customers can easily understand and compare costs, fostering trust and reducing disputes. For providers, standardized pricing streamlines operations, supports scalability, and simplifies market comparison, allowing for effective competitive positioning. Additionally, it aids in better financial planning and forecasting for both the provider and the customer, ensuring predictable revenue and informed decision-making. Overall, standardized pricing is essential for the sustainable growth and success of data products.</p>
@@ -1959,25 +1964,25 @@ any industry specific needs. </p>
 <blockquote>
 <p>In case standardized options are not enough:</p>
 </blockquote>
-<div class="highlight"><pre class="highlight yaml"><code><span class="s">You can make extensions to the standard</span> 
-<span class="s">with "x-" mechanism in order to fulfill</span> 
-<span class="s">any industry specific needs.</span> 
+<div class="highlight"><pre class="highlight plaintext"><code>You can make extensions to the standard 
+with "x-" mechanism in order to fulfill 
+any industry specific needs. 
 
-<span class="s">A suggestive example below</span> 
+A suggestive example below 
 
-<span class="na">pricingPlans</span><span class="pi">:</span>
-  <span class="na">en</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Premium subscription 1 year</span>
-    <span class="na">unit</span><span class="pi">:</span> <span class="s">recurring</span>
-    <span class="na">priceCurrency</span><span class="pi">:</span> <span class="s">EUR</span>
-    <span class="na">price</span><span class="pi">:</span> <span class="m">50.00</span>
-    <span class="na">billingDuration</span><span class="pi">:</span> <span class="s">year</span>
+pricingPlans:
+  en:
+  - name: Premium subscription 1 year
+    unit: Recurring
+    priceCurrency: EUR
+    price: "50.00"
+    billingDuration: year
 
-  <span class="pi">-</span> <span class="na">x-name</span><span class="pi">:</span> <span class="s">Extension plan</span>
-    <span class="na">unit</span><span class="pi">:</span> <span class="s">custom</span>
-    <span class="na">priceCurrency</span><span class="pi">:</span> <span class="s">EUR</span>
-    <span class="na">price</span><span class="pi">:</span> <span class="m">50.00</span>
-    <span class="na">billingDuration</span><span class="pi">:</span> <span class="s">year</span>
+  - x-name: Extension plan
+    unit: custom
+    priceCurrency: EUR
+    price: "50.00"
+    billingDuration: year
 
 </code></pre></div>
 <p><strong>Referencing Capability in Pricing Plans</strong> </p>
@@ -1994,9 +1999,9 @@ any industry specific needs. </p>
 <p><strong>Example Component Reference Paths</strong></p>
 
 <ul>
-<li>SLA: <code>#/product/SLA/gold</code> references gold SLA profile in the SLA component</li>
-<li>Data Quality: <code>#/product/dataQuality/default</code> references default data quality profile in the data quality component</li>
-<li>Access: <code>#/product/dataAccess/download</code> references download access profile in the SLA component</li>
+<li>SLA: <code>#/product/SLA/declarative/gold</code> references gold SLA profile in the SLA component</li>
+<li>Data Quality: <code>#/product/dataQuality/declarative/default</code> references default data quality profile in the data quality component</li>
+<li>Access: <code>#/product/dataAccess/download</code> references download access profile in the data access component</li>
 <li>Payment Gateway: <code>#/product/paymentGateways/paypal</code> references paypal payment profile in the Payment Gateways component</li>
 </ul>
 
@@ -2090,9 +2095,9 @@ any industry specific needs. </p>
     <span class="na">en</span><span class="pi">:</span>
       <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Standard API subscription 1 month</span>
         <span class="na">priceCurrency</span><span class="pi">:</span> <span class="s">EUR</span>
-        <span class="na">price</span><span class="pi">:</span> <span class="m">50</span>
+        <span class="na">price</span><span class="pi">:</span> <span class="s2">"</span><span class="s">50"</span>
         <span class="na">billingDuration</span><span class="pi">:</span> <span class="s">month</span>
-        <span class="na">unit</span><span class="pi">:</span> <span class="s">recurring</span>
+        <span class="na">unit</span><span class="pi">:</span> <span class="s">Recurring</span>
         <span class="na">maxTransactionQuantity</span><span class="pi">:</span> <span class="m">200000</span>
         <span class="na">offering</span><span class="pi">:</span>
           <span class="pi">-</span> <span class="s">High Quality Events data</span>
@@ -2108,9 +2113,9 @@ any industry specific needs. </p>
           <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/dataAccess/API'</span>
       <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Premium MCP 1 month</span>
         <span class="na">priceCurrency</span><span class="pi">:</span> <span class="s">EUR</span>
-        <span class="na">price</span><span class="pi">:</span> <span class="m">500</span>
+        <span class="na">price</span><span class="pi">:</span> <span class="s2">"</span><span class="s">500"</span>
         <span class="na">billingDuration</span><span class="pi">:</span> <span class="s">month</span>
-        <span class="na">unit</span><span class="pi">:</span> <span class="s">recurring</span>
+        <span class="na">unit</span><span class="pi">:</span> <span class="s">Recurring</span>
         <span class="na">maxTransactionQuantity</span><span class="pi">:</span> <span class="m">0</span>
         <span class="na">offering</span><span class="pi">:</span>
           <span class="pi">-</span> <span class="s">High Quality Events data</span>
@@ -2119,9 +2124,9 @@ any industry specific needs. </p>
         <span class="na">paymentGateway</span><span class="pi">:</span>
           <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/paymentGateways/agent'</span>
         <span class="na">dataQuality</span><span class="pi">:</span>
-          <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/dataQuality/premium'</span>
+          <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/dataQuality/declarative/premium'</span>
         <span class="na">SLA</span><span class="pi">:</span>
-          <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/SLA/premium'</span>
+          <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/SLA/declarative/premium'</span>
         <span class="na">access</span><span class="pi">:</span>
           <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/dataAccess/agent'</span>
 
@@ -2360,7 +2365,7 @@ any industry specific needs. </p>
 
 <p>If you see something missing, described inaccurately or plain wrong, or you want to comment the specification, <a href="https://github.com/Open-Data-Product-Initiative/dev/issues">raise an issue in Github</a></p>
 
-<p>Join the <a href="https://discord.gg/7KfnFxAc">ODPS Discord</a> to discuss the ideas and your needs! </p>
+<p>Join the <a href="https://discord.gg/7KfnFxAc">ODPS Discord</a> to discuss the ideas and your needs!</p>
 <h1 id='data-licensing'>Data Licensing</h1>
 <p>Data product licensing is essential for ensuring legal compliance, protecting intellectual property rights, enabling monetization and commercialization, facilitating control and governance, managing liability and indemnification, promoting standardization and interoperability, and fostering transparency and trust in data exchange and collaboration. By establishing clear and enforceable licensing agreements, data producers and consumers can effectively leverage data assets while minimizing legal risks and maximizing the value of data products.</p>
 
@@ -2586,7 +2591,7 @@ any industry specific needs. </p>
 <li>Promote <strong>reusability</strong> by referencing these interfaces throughout the ODPS YAML using <code>$ref</code></li>
 </ul>
 
-<p>Including an AI agent-specific access interface (<code>outputPorttype: AI</code>) supports MCP-based agent interactions, aligning your product with <strong>AI-native data delivery patterns</strong>.</p>
+<p>Including an AI agent-specific access interface (<code>outputPortType: AI</code>) supports MCP-based agent interactions, aligning your product with <strong>AI-native data delivery patterns</strong>.</p>
 <h4 id='referencing-examples'>Referencing Examples</h4>
 <p>For example in your <code>access</code> section in Pricing, you can reuse any defined method from <code>dataAccess</code> like this: <em>$ref: &#39;#/Product/dataAccess/default&#39;</em></p>
 <h2 id='optional-attributes-and-elements'>Optional attributes and elements</h2>
@@ -2597,26 +2602,26 @@ any industry specific needs. </p>
 <span class="na">dataAccess</span><span class="pi">:</span>
   <span class="na">default</span><span class="pi">:</span>
     <span class="na">name</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">en</span><span class="pi">:</span> <span class="s">Access to zipped package</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">Access to zipped package</span>
     <span class="na">description</span><span class="pi">:</span> 
-      <span class="pi">-</span> <span class="na">en</span><span class="pi">:</span> <span class="s">Latest Dataset and Resources</span>
-    <span class="na">outputPorttype</span><span class="pi">:</span> <span class="s">file</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">Latest Dataset and Resources</span>
+    <span class="na">outputPortType</span><span class="pi">:</span> <span class="s">file</span>
     <span class="na">format</span><span class="pi">:</span> <span class="s">zip</span>
     <span class="na">accessURL</span><span class="pi">:</span> <span class="s">url to file as zip</span>
   <span class="na">dataonly</span><span class="pi">:</span>
     <span class="na">name</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">en</span><span class="pi">:</span> <span class="s">Access to latest dataset</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">Access to latest dataset</span>
     <span class="na">description</span><span class="pi">:</span> 
-      <span class="pi">-</span> <span class="na">en</span><span class="pi">:</span> <span class="s">Latest Dataset</span>
-    <span class="na">outputPorttype</span><span class="pi">:</span> <span class="s">file</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">Latest Dataset</span>
+    <span class="na">outputPortType</span><span class="pi">:</span> <span class="s">file</span>
     <span class="na">format</span><span class="pi">:</span> <span class="s">CSV</span>
     <span class="na">accessURL</span><span class="pi">:</span> <span class="s">url to file as CSV</span>
   <span class="na">API</span><span class="pi">:</span>
     <span class="na">name</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">en</span><span class="pi">:</span> <span class="s">Access to API</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">Access to API</span>
     <span class="na">description</span><span class="pi">:</span> 
-      <span class="pi">-</span> <span class="na">en</span><span class="pi">:</span> <span class="s">API Access to the Latest Dataset</span>
-    <span class="na">outputPorttype</span><span class="pi">:</span> <span class="s">API</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">API Access to the Latest Dataset</span>
+    <span class="na">outputPortType</span><span class="pi">:</span> <span class="s">API</span>
     <span class="na">authenticationMethod</span><span class="pi">:</span> <span class="s">OAuth</span>
     <span class="na">specification</span><span class="pi">:</span> <span class="s">OAS</span>
     <span class="na">format</span><span class="pi">:</span> <span class="s">JSON</span>
@@ -2628,14 +2633,12 @@ any industry specific needs. </p>
       <span class="s">https://data.cms.gov/provr-enrollment/docs</span>
   <span class="na">agent</span><span class="pi">:</span> 
     <span class="na">name</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">en</span><span class="pi">:</span> <span class="s">AI Agent access to the data product</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">AI Agent access to the data product</span>
     <span class="na">description</span><span class="pi">:</span> 
-      <span class="pi">-</span> <span class="na">en</span><span class="pi">:</span> <span class="s">Provides AI agents access to the data product via MCP server.</span> 
-    <span class="na">outputPorttype</span><span class="pi">:</span> <span class="s">AI</span>
-    <span class="na">description</span><span class="pi">:</span> 
-    <span class="pi">-</span> <span class="na">en</span><span class="pi">:</span> <span class="s">MCP interface for structured data access and agent interaction.</span>
+      <span class="na">en</span><span class="pi">:</span> <span class="s">MCP interface for structured data access and agent interaction.</span>
+    <span class="na">outputPortType</span><span class="pi">:</span> <span class="s">AI</span>
     <span class="na">authenticationMethod</span><span class="pi">:</span> <span class="s">Token</span>
-    <span class="na">specification</span><span class="pi">:</span> <span class="s">MCP 2025-03-26</span>
+    <span class="na">specification</span><span class="pi">:</span> <span class="s">MCP</span>
     <span class="na">format</span><span class="pi">:</span> <span class="s">MCP</span>
     <span class="na">specsURL</span><span class="pi">:</span> <span class="s">https://urbanpulse.ai/llms.txt</span>
     <span class="na">documentationURL</span><span class="pi">:</span> <span class="s">https://urbanpulse.ai/llms-full.txt</span>
@@ -2699,7 +2702,7 @@ any industry specific needs. </p>
 <td>Multilingual description for the access interface. Supports user understanding.</td>
 </tr>
 <tr>
-<td><strong>outputPorttype</strong></td>
+<td><strong>outputPortType</strong></td>
 <td>string</td>
 <td>file, API, SQL, AI, gRPC, sFTP, etc.</td>
 <td>Describes the technical method for delivering data (e.g., <code>file</code> for file downloads, <code>API</code> for web services).</td>
@@ -2769,7 +2772,7 @@ any industry specific needs. </p>
 <span class="na">dataHolder</span><span class="pi">:</span>
   <span class="na">en</span><span class="pi">:</span>
     <span class="na">legalName</span><span class="pi">:</span> <span class="s">MindMote Oy</span>
-    <span class="na">businessId</span><span class="pi">:</span> <span class="s">12243434-12</span>
+    <span class="na">businessID</span><span class="pi">:</span> <span class="s">12243434-12</span>
     <span class="na">email</span><span class="pi">:</span> <span class="s">contact@mindmote.fi</span>
     <span class="na">taxID</span><span class="pi">:</span> <span class="s2">"</span><span class="s">12243434-12"</span>
     <span class="na">vatID</span><span class="pi">:</span> <span class="s2">"</span><span class="s">12243434-12"</span>
@@ -2783,7 +2786,7 @@ any industry specific needs. </p>
     <span class="na">addressLocality</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Tampere"</span>
     <span class="na">addressCountry</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Finland"</span>
     <span class="na">aggregateRating</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
-    <span class="na">ratingCount</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1245"</span>
+    <span class="na">ratingCount</span><span class="pi">:</span> <span class="m">1245</span>
     <span class="na">slogan</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
     <span class="na">parentOrganization</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
 
@@ -2959,11 +2962,11 @@ Named gateway definitions (e.g., <code>default</code>, <code>Agent</code>) can b
 <blockquote>
 <p>referencing examples:</p>
 </blockquote>
-<div class="highlight"><pre class="highlight yaml"><code>  <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/Product/paymentGateways/default'</span>
+<div class="highlight"><pre class="highlight plaintext"><code>  $ref: '#/Product/paymentGateways/default'
 
-  <span class="s">...</span>
+  ...
 
-  <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/Product/dataQuality/agent'</span>
+  $ref: '#/Product/dataQuality/agent'
 </code></pre></div>
 <p><strong>The Role of <code>default</code>:</strong>
 Whenever the <code>paymentGateways</code> object is used, a gateway named <code>default</code> is <strong>expected and required</strong>. It serves as the <strong>primary or fallback payment method</strong> and enables compatibility even in simpler configurations that only need one payment integration.</p>
@@ -2987,7 +2990,7 @@ Whenever the <code>paymentGateways</code> object is used, a gateway named <code>
     <span class="na">description</span><span class="pi">:</span>
       <span class="na">en</span><span class="pi">:</span> <span class="s">API consumption payment gateway for humans</span>
     <span class="na">type</span><span class="pi">:</span> <span class="s">Stripe</span>
-    <span class="na">version</span><span class="pi">:</span> <span class="m">1</span>
+    <span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">1'</span>
     <span class="na">reference</span><span class="pi">:</span> <span class="s1">'</span><span class="s">https://docs.stripe.com/'</span>
     <span class="na">spec</span><span class="pi">:</span> <span class="pi">|</span>
       <span class="s">// Replace this with your actual implementation or link</span>
@@ -3002,7 +3005,7 @@ Whenever the <code>paymentGateways</code> object is used, a gateway named <code>
     <span class="na">description</span><span class="pi">:</span>
       <span class="na">en</span><span class="pi">:</span> <span class="s">Payment gateway for AI agents</span>
     <span class="na">type</span><span class="pi">:</span> <span class="s">Axio</span>
-    <span class="na">version</span><span class="pi">:</span> <span class="m">1</span>
+    <span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">1'</span>
     <span class="na">reference</span><span class="pi">:</span> <span class="s1">'</span><span class="s">https://www.x402.org/'</span>
     <span class="na">spec</span><span class="pi">:</span> <span class="pi">|</span>
       <span class="s">paymentMiddleware("0xYourAddress", {"/your-endpoint": "$0.01"});</span>
@@ -3124,7 +3127,7 @@ Whenever the <code>paymentGateways</code> object is used, a gateway named <code>
 <div class="highlight"><pre class="highlight yaml"><code>
 <span class="nn">---</span>
 <span class="na">schema</span><span class="pi">:</span> <span class="s1">'</span><span class="s">https://opendataproducts.org/v4.1/schema/odps.yaml'</span>
-<span class="na">version</span><span class="pi">:</span> <span class="m">4.1</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">4.1'</span>
 <span class="na">product</span><span class="pi">:</span>
   <span class="na">productStrategy</span><span class="pi">:</span>
     <span class="na">objectives</span><span class="pi">:</span>
@@ -3148,7 +3151,7 @@ Whenever the <code>paymentGateways</code> object is used, a gateway named <code>
     <span class="na">productKPIs</span><span class="pi">:</span>
       <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">kpi-detection-coverage</span>
         <span class="na">name</span><span class="pi">:</span> <span class="s">Event Detection Coverage</span>
-        <span class="na">description</span><span class="pi">:</span> <span class="err">%</span> <span class="s">of reported incidents captured in real time</span>
+        <span class="na">description</span><span class="pi">:</span> <span class="s1">'</span><span class="s">%</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">reported</span><span class="nv"> </span><span class="s">incidents</span><span class="nv"> </span><span class="s">captured</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">real</span><span class="nv"> </span><span class="s">time'</span>
         <span class="na">unit</span><span class="pi">:</span> <span class="s">percentage</span>
         <span class="na">target</span><span class="pi">:</span> <span class="m">95</span>
         <span class="na">direction</span><span class="pi">:</span> <span class="s">at_least</span>
@@ -3181,7 +3184,7 @@ Whenever the <code>paymentGateways</code> object is used, a gateway named <code>
         <span class="s">sports events — making it accessible through APIs and dashboards for</span>
         <span class="s">internal and future external use.</span>
       <span class="na">productSeries</span><span class="pi">:</span> <span class="s">SmartCity Living Data Products</span>
-      <span class="na">visibility</span><span class="pi">:</span> <span class="s">internal</span>
+      <span class="na">visibility</span><span class="pi">:</span> <span class="s">private</span>
       <span class="na">status</span><span class="pi">:</span> <span class="s">production</span>
       <span class="na">productVersion</span><span class="pi">:</span> <span class="s">0.1.0</span>
       <span class="na">versionNotes</span><span class="pi">:</span> <span class="pi">&gt;-</span>
@@ -3209,9 +3212,9 @@ Whenever the <code>paymentGateways</code> object is used, a gateway named <code>
       <span class="na">en</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Basic Reader</span>
           <span class="na">priceCurrency</span><span class="pi">:</span> <span class="s">USD</span>
-          <span class="na">price</span><span class="pi">:</span> <span class="m">0</span>
+          <span class="na">price</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
           <span class="na">billingDuration</span><span class="pi">:</span> <span class="s">month</span>
-          <span class="na">unit</span><span class="pi">:</span> <span class="s">recurring</span>
+          <span class="na">unit</span><span class="pi">:</span> <span class="s">Recurring</span>
           <span class="na">maxTransactionQuantity</span><span class="pi">:</span> <span class="m">100</span>
           <span class="na">offering</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="s">Standard access to event metadata</span>
@@ -3224,16 +3227,16 @@ Whenever the <code>paymentGateways</code> object is used, a gateway named <code>
           <span class="na">paymentGateway</span><span class="pi">:</span>
             <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/paymentGateways/default'</span>
           <span class="na">dataQuality</span><span class="pi">:</span>
-            <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/dataQuality/default'</span>
+            <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/dataQuality/declarative/default'</span>
           <span class="na">SLA</span><span class="pi">:</span>
-            <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/SLA/default'</span>
+            <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/SLA/declarative/default'</span>
           <span class="na">access</span><span class="pi">:</span>
             <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/dataAccess/API'</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Extended User</span>
           <span class="na">priceCurrency</span><span class="pi">:</span> <span class="s">USD</span>
-          <span class="na">price</span><span class="pi">:</span> <span class="m">300</span>
+          <span class="na">price</span><span class="pi">:</span> <span class="s1">'</span><span class="s">300'</span>
           <span class="na">billingDuration</span><span class="pi">:</span> <span class="s">month</span>
-          <span class="na">unit</span><span class="pi">:</span> <span class="s">recurring</span>
+          <span class="na">unit</span><span class="pi">:</span> <span class="s">Recurring</span>
           <span class="na">maxTransactionQuantity</span><span class="pi">:</span> <span class="m">1000</span>
           <span class="na">offering</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="s">Prioritized SQL access during high-demand periods</span>
@@ -3246,16 +3249,16 @@ Whenever the <code>paymentGateways</code> object is used, a gateway named <code>
           <span class="na">paymentGateway</span><span class="pi">:</span>
             <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/paymentGateways/default'</span>
           <span class="na">dataQuality</span><span class="pi">:</span>
-            <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/dataQuality/default'</span>
+            <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/dataQuality/declarative/default'</span>
           <span class="na">SLA</span><span class="pi">:</span>
-            <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/SLA/default'</span>
+            <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/SLA/declarative/default'</span>
           <span class="na">access</span><span class="pi">:</span>
             <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/dataAccess/API'</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">High Volume Access</span>
           <span class="na">priceCurrency</span><span class="pi">:</span> <span class="s">USD</span>
-          <span class="na">price</span><span class="pi">:</span> <span class="m">2000</span>
+          <span class="na">price</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2000'</span>
           <span class="na">billingDuration</span><span class="pi">:</span> <span class="s">month</span>
-          <span class="na">unit</span><span class="pi">:</span> <span class="s">recurring</span>
+          <span class="na">unit</span><span class="pi">:</span> <span class="s">Recurring</span>
           <span class="na">maxTransactionQuantity</span><span class="pi">:</span> <span class="m">500000</span>
           <span class="na">offering</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="s">Dedicated API channel for bulk usage</span>
@@ -3265,9 +3268,9 @@ Whenever the <code>paymentGateways</code> object is used, a gateway named <code>
           <span class="na">paymentGateway</span><span class="pi">:</span>
             <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/paymentGateways/agent'</span>
           <span class="na">dataQuality</span><span class="pi">:</span>
-            <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/dataQuality/premium'</span>
+            <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/dataQuality/declarative/premium'</span>
           <span class="na">SLA</span><span class="pi">:</span>
-            <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/SLA/premium'</span>
+            <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/SLA/declarative/premium'</span>
           <span class="na">access</span><span class="pi">:</span>
             <span class="s">$ref</span><span class="pi">:</span> <span class="s1">'</span><span class="s">#/product/dataAccess/Agent'</span>
   <span class="na">SLA</span><span class="pi">:</span>
@@ -3307,11 +3310,11 @@ Whenever the <code>paymentGateways</code> object is used, a gateway named <code>
             <span class="na">objective</span><span class="pi">:</span> <span class="m">5</span>
             <span class="na">unit</span><span class="pi">:</span> <span class="s">minutes</span>
     <span class="na">support</span><span class="pi">:</span>
-    <span class="na">phoneNumber</span><span class="pi">:</span> <span class="s1">'</span><span class="s">+971508976456'</span>
-    <span class="na">phoneServiceHours</span><span class="pi">:</span> <span class="s">Mon–Fri 8am–4pm (GMT)</span>
-    <span class="na">email</span><span class="pi">:</span> <span class="s">support@opendataproducts.org</span>
-    <span class="na">emailServiceHours</span><span class="pi">:</span> <span class="s">Mon–Fri 8am–4pm (GMT)</span>
-    <span class="na">documentationURL</span><span class="pi">:</span> <span class="s1">'</span><span class="s">'</span>
+      <span class="na">phoneNumber</span><span class="pi">:</span> <span class="s1">'</span><span class="s">+971508976456'</span>
+      <span class="na">phoneServiceHours</span><span class="pi">:</span> <span class="s">Mon–Fri 8am–4pm (GMT)</span>
+      <span class="na">email</span><span class="pi">:</span> <span class="s">support@opendataproducts.org</span>
+      <span class="na">emailServiceHours</span><span class="pi">:</span> <span class="s">Mon–Fri 8am–4pm (GMT)</span>
+      <span class="na">documentationURL</span><span class="pi">:</span> <span class="s1">'</span><span class="s">https://opendataproducts.org/'</span>
 
   <span class="na">dataQuality</span><span class="pi">:</span>
     <span class="na">declarative</span><span class="pi">:</span>
@@ -3363,19 +3366,19 @@ Whenever the <code>paymentGateways</code> object is used, a gateway named <code>
         <span class="na">en</span><span class="pi">:</span> <span class="s">Access to zipped package</span>
       <span class="na">description</span><span class="pi">:</span>
         <span class="na">en</span><span class="pi">:</span> <span class="s">Latest Dataset and Resources</span>
-      <span class="na">outputPorttype</span><span class="pi">:</span> <span class="s">file</span>
+      <span class="na">outputPortType</span><span class="pi">:</span> <span class="s">file</span>
       <span class="na">format</span><span class="pi">:</span> <span class="s">zip</span>
-      <span class="na">accessURL</span><span class="pi">:</span> <span class="s">url to file as zip</span>
+      <span class="na">accessURL</span><span class="pi">:</span> <span class="s1">'</span><span class="s">https://urbanpulse.ai/downloads/events.zip'</span>
     <span class="na">dataonly</span><span class="pi">:</span>
       <span class="na">name</span><span class="pi">:</span>
         <span class="na">en</span><span class="pi">:</span> <span class="s">Access to latest dataset</span>
       <span class="na">description</span><span class="pi">:</span>
         <span class="na">en</span><span class="pi">:</span> <span class="s">Latest Dataset</span>
-      <span class="na">outputPorttype</span><span class="pi">:</span> <span class="s">file</span>
+      <span class="na">outputPortType</span><span class="pi">:</span> <span class="s">file</span>
       <span class="na">format</span><span class="pi">:</span> <span class="s">CSV</span>
-      <span class="na">accessURL</span><span class="pi">:</span> <span class="s">url to file as CSV</span>
+      <span class="na">accessURL</span><span class="pi">:</span> <span class="s1">'</span><span class="s">https://urbanpulse.ai/downloads/events.csv'</span>
     <span class="na">API</span><span class="pi">:</span>
-      <span class="na">outputPorttype</span><span class="pi">:</span> <span class="s">API</span>
+      <span class="na">outputPortType</span><span class="pi">:</span> <span class="s">API</span>
       <span class="na">authenticationMethod</span><span class="pi">:</span> <span class="s">OAuth</span>
       <span class="na">specification</span><span class="pi">:</span> <span class="s">OAS</span>
       <span class="na">format</span><span class="pi">:</span> <span class="s">JSON</span>
@@ -3383,11 +3386,11 @@ Whenever the <code>paymentGateways</code> object is used, a gateway named <code>
       <span class="na">specsURL</span><span class="pi">:</span> <span class="s1">'</span><span class="s">https://data.cms.gov/provr-enrollment/api-docs'</span>
       <span class="na">documentationURL</span><span class="pi">:</span> <span class="s1">'</span><span class="s">https://data.cms.gov/provr-enrollment/docs'</span>
     <span class="na">Agent</span><span class="pi">:</span>
-      <span class="na">outputPorttype</span><span class="pi">:</span> <span class="s">AI</span>
+      <span class="na">outputPortType</span><span class="pi">:</span> <span class="s">AI</span>
       <span class="na">description</span><span class="pi">:</span>
         <span class="na">en</span><span class="pi">:</span> <span class="s">MCP interface for structured data access and agent interaction.</span>
       <span class="na">authenticationMethod</span><span class="pi">:</span> <span class="s">Token</span>
-      <span class="na">specification</span><span class="pi">:</span> <span class="s">MCP 2025-03-26</span>
+      <span class="na">specification</span><span class="pi">:</span> <span class="s">MCP</span>
       <span class="na">format</span><span class="pi">:</span> <span class="s">MCP</span>
       <span class="na">specsURL</span><span class="pi">:</span> <span class="s1">'</span><span class="s">https://urbanpulse.ai/llms.txt'</span>
       <span class="na">documentationURL</span><span class="pi">:</span> <span class="s1">'</span><span class="s">https://urbanpulse.ai/llms-full.txt'</span>
@@ -3396,7 +3399,7 @@ Whenever the <code>paymentGateways</code> object is used, a gateway named <code>
       <span class="na">description</span><span class="pi">:</span>
         <span class="na">en</span><span class="pi">:</span> <span class="s">Stripe-based API payment gateway</span>
       <span class="na">type</span><span class="pi">:</span> <span class="s">Stripe</span>
-      <span class="na">version</span><span class="pi">:</span> <span class="m">1</span>
+      <span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">1'</span>
       <span class="na">reference</span><span class="pi">:</span> <span class="s1">'</span><span class="s">https://docs.stripe.com/'</span>
       <span class="na">spec</span><span class="pi">:</span> <span class="pi">|</span>
         <span class="s">stripe.createCheckoutSession({</span>
@@ -3409,7 +3412,7 @@ Whenever the <code>paymentGateways</code> object is used, a gateway named <code>
       <span class="na">description</span><span class="pi">:</span>
         <span class="na">en</span><span class="pi">:</span> <span class="s">Payment gateway for AI agents</span>
       <span class="na">type</span><span class="pi">:</span> <span class="s">Axio</span>
-      <span class="na">version</span><span class="pi">:</span> <span class="m">1</span>
+      <span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">1'</span>
       <span class="na">reference</span><span class="pi">:</span> <span class="s1">'</span><span class="s">https://www.x402.org/'</span>
       <span class="na">spec</span><span class="pi">:</span> <span class="pi">|</span>
         <span class="s">paymentMiddleware("0xYourAddress", {"/mcp-access": "$0.01"});</span>
@@ -3483,7 +3486,7 @@ Whenever the <code>paymentGateways</code> object is used, a gateway named <code>
   <span class="na">dataHolder</span><span class="pi">:</span>
     <span class="na">en</span><span class="pi">:</span>
       <span class="na">legalName</span><span class="pi">:</span> <span class="s">MindMote Oy</span>
-      <span class="na">businessId</span><span class="pi">:</span> <span class="s">12243434-12</span>
+      <span class="na">businessID</span><span class="pi">:</span> <span class="s">12243434-12</span>
       <span class="na">email</span><span class="pi">:</span> <span class="s">contact@mindmote.fi</span>
       <span class="na">taxID</span><span class="pi">:</span> <span class="s">12243434-12</span>
       <span class="na">vatID</span><span class="pi">:</span> <span class="s">12243434-12</span>
@@ -3497,7 +3500,7 @@ Whenever the <code>paymentGateways</code> object is used, a gateway named <code>
       <span class="na">addressLocality</span><span class="pi">:</span> <span class="s">Tampere</span>
       <span class="na">addressCountry</span><span class="pi">:</span> <span class="s">Finland</span>
       <span class="na">aggregateRating</span><span class="pi">:</span> <span class="s1">'</span><span class="s">'</span>
-      <span class="na">ratingCount</span><span class="pi">:</span> <span class="s1">'</span><span class="s">1245'</span>
+      <span class="na">ratingCount</span><span class="pi">:</span> <span class="m">1245</span>
       <span class="na">slogan</span><span class="pi">:</span> <span class="s1">'</span><span class="s">'</span>
       <span class="na">parentOrganization</span><span class="pi">:</span> <span class="s1">'</span><span class="s">'</span>
 
@@ -3514,12 +3517,16 @@ Whenever the <code>paymentGateways</code> object is used, a gateway named <code>
 <span class="na">schema</span><span class="pi">:</span> <span class="s">https://opendataproducts.org/v4.1/schema/odps.yaml</span>
 <span class="na">version</span><span class="pi">:</span> <span class="m">4.1</span>
 <span class="na">product</span><span class="pi">:</span>
-  <span class="na">en</span><span class="pi">:</span>
-    <span class="na">name</span><span class="pi">:</span> <span class="s">Pets of the year</span>
-    <span class="na">productID</span><span class="pi">:</span> <span class="s">123456are</span>
-    <span class="na">visibility</span><span class="pi">:</span> <span class="s">private</span>
-    <span class="na">status</span><span class="pi">:</span> <span class="s">draft</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">derived data</span>
+  <span class="na">details</span><span class="pi">:</span>
+    <span class="na">en</span><span class="pi">:</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">Pets of the year</span>
+      <span class="na">productID</span><span class="pi">:</span> <span class="s">123456are</span>
+      <span class="na">valueProposition</span><span class="pi">:</span> <span class="s">Design a customised petstore using pet preference data.</span>
+      <span class="na">description</span><span class="pi">:</span> <span class="s">This is a minimal example of a petstore data product.</span>
+      <span class="na">visibility</span><span class="pi">:</span> <span class="s">private</span>
+      <span class="na">status</span><span class="pi">:</span> <span class="s">draft</span>
+      <span class="na">productVersion</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0.1.0'</span>
+      <span class="na">type</span><span class="pi">:</span> <span class="s">derived data</span>
 
 </code></pre></div><h1 id='odps-template-family'>ODPS template family</h1>
 <p>ODPS can describe many kinds of data products. A full-schema example is useful for completeness, but it is too large as the first starting point for many teams. The ODPS template family gives users a smaller set of application skeletons that reuse the existing ODPS schema areas.</p>

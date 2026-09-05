@@ -95,7 +95,7 @@ pricingPlans:
 
 dataAccess:
   interface:
-    outputPorttype: API
+    outputPortType: API
     authenticationMethod: OAuth
     specification: OAS
     format: REST
