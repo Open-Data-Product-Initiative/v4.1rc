@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "source"
 INCLUDES = SOURCE / "includes"
 EXAMPLES = SOURCE / "examples"
+TEMPLATES_DOC = INCLUDES / "_templates.md"
 JSON_SCHEMA_PATH = SOURCE / "schema" / "odps.json"
 YAML_SCHEMA_PATH = SOURCE / "schema" / "odps.yaml"
 
@@ -66,15 +67,19 @@ class Failure:
 
 
 def load_json(path: Path) -> Any:
-    return json.loads(path.read_text())
+    return json.loads(read_text(path))
 
 
 def load_yaml(path: Path) -> Any:
-    return yaml.safe_load(path.read_text())
+    return yaml.safe_load(read_text(path))
+
+
+def read_text(path: Path) -> str:
+    return path.read_bytes().decode("utf-8", errors="ignore")
 
 
 def yaml_blocks(path: Path) -> list[tuple[int, str]]:
-    text = path.read_text(errors="ignore")
+    text = read_text(path)
     pattern = re.compile(r"```(?:ya?ml)\s*\n(.*?)```", re.IGNORECASE | re.DOTALL)
     return [(index, match.group(1)) for index, match in enumerate(pattern.finditer(text), 1)]
 
@@ -232,6 +237,83 @@ def validate_standalone_yaml_examples(
             validate_instance(failures, "example-v41-yaml-schema", location, parsed, yaml_schema)
 
 
+def template_links() -> list[Path]:
+    text = read_text(TEMPLATES_DOC)
+    links = re.findall(r"\]\((examples/Templates/[^)]+\.yml)\)", text)
+    return [SOURCE / link for link in links]
+
+
+def materialize_placeholder(value: Any) -> Any:
+    if isinstance(value, dict):
+        return {key: materialize_placeholder(child) for key, child in value.items()}
+    if isinstance(value, list):
+        return [materialize_placeholder(child) for child in value]
+    if not has_template_placeholders(value):
+        return value
+
+    match = re.fullmatch(r"\{\{([^}]+)\}\}", value.strip())
+    if not match:
+        return value
+
+    token = match.group(1).strip()
+    if token.startswith("enum:"):
+        return token.removeprefix("enum:").split("|")[0].strip()
+    if token == "integer":
+        return 1
+    if token == "boolean":
+        return True
+    if token == "number or string":
+        return "1"
+    if token == "string: email":
+        return "contact@example.org"
+    if token == "string: url":
+        return "https://example.org/resource"
+    if token == "string: semver":
+        return "1.0.0"
+    if token == "string: ISO 4217 currency code or crypto ticker":
+        return "USD"
+    if token == "date: YYYY-MM-DD":
+        return "2026-01-01"
+    if token == "object":
+        return {}
+    if token == "string":
+        return "Example value"
+    return value
+
+
+def validate_template_family(
+    failures: list[Failure],
+    json_schema: dict[str, Any],
+    yaml_schema: dict[str, Any],
+) -> None:
+    linked = template_links()
+    if not linked:
+        failures.append(Failure("template-family-links", str(TEMPLATES_DOC.relative_to(ROOT)), "no template links found"))
+        return
+
+    for path in linked:
+        location = str(path.relative_to(ROOT))
+        if not path.exists():
+            failures.append(Failure("template-family-links", location, "linked template does not exist"))
+            continue
+        try:
+            parsed = load_yaml(path)
+        except Exception as exc:  # noqa: BLE001
+            failures.append(Failure("template-family-parse", location, str(exc).splitlines()[0]))
+            continue
+        materialized = materialize_placeholder(parsed)
+        if contains_placeholder(materialized):
+            failures.append(
+                Failure("template-family-placeholders", location, "unresolved placeholder remains after materialization")
+            )
+            continue
+        if not is_complete_v41_document(materialized):
+            failures.append(Failure("template-family-document", location, "template does not materialize to a v4.1 document"))
+            continue
+        validate_instance(failures, "template-family-json-schema", location, materialized, json_schema)
+        validate_instance(failures, "template-family-yaml-schema", location, materialized, yaml_schema)
+
+
 def collect_keys(value: Any, keys: set[str]) -> None:
     if isinstance(value, dict):
         for key, child in value.items():
@@ -259,7 +341,7 @@ def validate_hello_world_text_alignment(failures: list[Failure]) -> None:
     keys: set[str] = set()
     collect_keys(parsed, keys)
     spec_text = "\n".join(
-        file.read_text(errors="ignore")
+        read_text(file)
         for file in sorted(INCLUDES.glob("*.md")) + [SOURCE / "index.html.md"]
         if file.name != "_helloworld.md"
     )
@@ -391,7 +473,7 @@ def validate_schema_alignment(
 def validate_forbidden_drift(failures: list[Failure]) -> None:
     files = sorted(INCLUDES.glob("*.md")) + [SOURCE / "index.html.md", JSON_SCHEMA_PATH, YAML_SCHEMA_PATH]
     for path in files:
-        text = path.read_text(errors="ignore")
+        text = read_text(path)
         for label, pattern in FORBIDDEN_TEXT_PATTERNS.items():
             match = re.search(pattern, text)
             if match:
@@ -411,6 +493,7 @@ def main() -> int:
 
     validate_markdown_yaml_examples(failures, json_schema, yaml_schema)
     validate_standalone_yaml_examples(failures, json_schema, yaml_schema)
+    validate_template_family(failures, json_schema, yaml_schema)
     validate_hello_world_text_alignment(failures)
     validate_forbidden_drift(failures)
 

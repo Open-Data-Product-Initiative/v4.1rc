@@ -60,8 +60,9 @@ product:
           - dimension: "{{enum: latency | uptime | responseTime | errorRate | endOfSupport | endOfLife | updateFrequency | timeToDetect | timeToNotify | timeToRepair | emailResponseTime}}"
             objective: "{{integer}}"
             weight: "{{integer}}"
-            unit: "{{string}}"
+            unit: "{{enum: percent | milliseconds | seconds | minutes | days | weeks | months | years | never | date | null}}"
     support:
+      phoneNumber: "{{string}}"
       email: "{{string: email}}"
       emailServiceHours: "{{string}}"
       documentationURL: "{{string: url}}"
